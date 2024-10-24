@@ -1,31 +1,16 @@
-from typing import Union
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from transformers import AutoModelForCausalLM, AutoTokenizer
-model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-Instruct-v0.2")
-tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.2")
+from huggingface_hub import snapshot_download
+from pathlib import Path
 
+"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"
 
-messages = [
-    {"role": "user", "content": "What is your favourite condiment?"},
-    {"role": "assistant", "content": "Well, I'm quite partial to a good squeeze of fresh lemon juice. It adds just the right amount of zesty flavour to whatever I'm cooking up in the kitchen!"},
-    {"role": "user", "content": "Do you have mayonnaise recipes?"}
-]
+mistral_models_path = Path.home().joinpath('mistral_models', '7B-Instruct-v0.3')
+mistral_models_path.mkdir(parents=True, exist_ok=True)
 
-encodeds = tokenizer.apply_chat_template(messages, return_tensors="pt")
-
-model_inputs = encodeds.to()
-model.to()
-
-generated_ids = model.generate(model_inputs, max_new_tokens=1000, do_sample=True)
-decoded = tokenizer.batch_decode(generated_ids)
-print(decoded[0])
-
-
-
-
+snapshot_download(repo_id="mistralai/Mistral-7B-Instruct-v0.3", allow_patterns=["params.json", "consolidated.safetensors", "tokenizer.model.v3"], local_dir=mistral_models_path)
 app = FastAPI()
 
 class Query(BaseModel):
@@ -38,5 +23,3 @@ def read_root():
 @app.post("/prompt")
 def post_prompt(query: Query):
     return {"answer": "Hello world"}
-
-
