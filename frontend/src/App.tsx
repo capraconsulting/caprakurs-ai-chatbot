@@ -18,7 +18,6 @@ function App() {
   const chatInput = useRef<HTMLInputElement>(null);
   const chatMessages = useRef<HTMLDivElement>(null);
   const [loadResponse, setLoadResponse] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -84,15 +83,15 @@ function App() {
   };
 
   return (
-    <div
-      id="container"
-      className="flex flex-row justify-center items-center w-full h-full"
-    >
-      <div id="chat-container">
+    <div id="container">
+      <div
+        id="chat-container"
+        className="h-full w-full flex flex-row items-center"
+      >
+        <div id="chat-header">
+          <h2 className="text-2xl">AWS AI Workshop: {modelName}</h2>
+        </div>
         <div>
-          <div id="chat-header">
-            <h2 className="text-2xl">My LLM</h2>
-          </div>
           <button
             className="h-10 flex justify-center items-center"
             onClick={() => download(modelName)}
@@ -100,7 +99,10 @@ function App() {
             Load {modelName}
           </button>
         </div>
-        <div ref={chatMessages} className="chat-messages">
+        <div
+          ref={chatMessages}
+          className="w-full flex flex-col items-center justify-center"
+        >
           {loading && <div className="spinner"></div>}
           {messages.map((message, index) => (
             <div className={clsx(message.role, "chat-message")} key={index}>
@@ -109,8 +111,9 @@ function App() {
           ))}
         </div>
         {loadResponse && (
-          <div className="loading">
-            Waiting for LLM response...<div className="spinner"></div>
+          <div className="flex flex-col items-center">
+            Waiting for LLM response...
+            <div className="spinner"></div>
           </div>
         )}
         <div id="chat-input-container">
