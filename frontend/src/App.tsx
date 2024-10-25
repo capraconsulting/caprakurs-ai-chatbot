@@ -17,6 +17,7 @@ function App() {
   const sendButton = useRef<HTMLButtonElement>(null);
   const chatInput = useRef<HTMLInputElement>(null);
   const chatMessages = useRef<HTMLDivElement>(null);
+  const [loadResponse, setLoadResponse] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -30,6 +31,7 @@ function App() {
   );
 
   const chat = (message: string) => {
+    setLoadResponse(true);
     aiWorker.postMessage({
       action: "chat",
       content: message,
@@ -38,7 +40,6 @@ function App() {
 
   const download = (modelURL: string) => {
     setLoading(true);
-    addMessage("Downloading model...", "system");
 
     aiWorker.postMessage({
       action: "download",
@@ -63,6 +64,7 @@ function App() {
         setLoading(false);
       } else if (aiResponse.result) {
         addMessage(aiResponse.result, "assistant");
+        setLoadResponse(false);
       }
     };
 
@@ -82,12 +84,22 @@ function App() {
   };
 
   return (
-    <div id="container">
+    <div
+      id="container"
+      className="flex flex-row justify-center items-center w-full h-full"
+    >
       <div id="chat-container">
-        <div id="chat-header">
-          <h2>My LLM: {modelName}</h2>
+        <div>
+          <div id="chat-header">
+            <h2 className="text-2xl">My LLM</h2>
+          </div>
+          <button
+            className="h-10 flex justify-center items-center"
+            onClick={() => download(modelName)}
+          >
+            Load {modelName}
+          </button>
         </div>
-        <button onClick={() => download(modelName)}>Download Model</button>
         <div ref={chatMessages} className="chat-messages">
           {loading && <div className="spinner"></div>}
           {messages.map((message, index) => (
@@ -96,10 +108,16 @@ function App() {
             </div>
           ))}
         </div>
+        {loadResponse && (
+          <div className="loading">
+            Waiting for LLM response...<div className="spinner"></div>
+          </div>
+        )}
         <div id="chat-input-container">
           {!loading && (
-            <div>
+            <div className="w-full p-10 flex flex-row justify-center">
               <input
+                className="w-full"
                 type="text"
                 ref={chatInput}
                 value={message}
