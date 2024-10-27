@@ -2,6 +2,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import ollama
+import boto3
+
+client = boto3.client('bedrock')
 
 class GenerateResponse(BaseModel):
     model: str
@@ -22,3 +25,9 @@ def generate(generateResponse: GenerateResponse):
 def chat(generateChat: GenerateChat):
     response = ollama.chat(model=generateChat.model, messages=generateChat.messages)
     return {"response": response['message']['content']}
+
+@app.post("/bedrock")
+def chat(generateResponse: GenerateResponse):
+    response = client.get_imported_model(modelIdentifier=generateResponse.model)
+    return {"response": response}
+
