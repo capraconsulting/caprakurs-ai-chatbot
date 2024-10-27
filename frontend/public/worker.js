@@ -10,20 +10,16 @@ self.addEventListener("message", (event) => {
   const userRequest = event.data;
 
   if (userRequest.action === "download") {
-    const modelURL = userRequest.modelURL;
-    downloadModel(modelURL);
+    downloadModel(userRequest.modelName);
   } else if (userRequest.action === "chat") {
-    const content = userRequest.content;
-    generateResponse(content);
+    generateResponse(userRequest.content);
   }
 });
 
-const downloadModel = async (modelURL) => {
-  generator = await pipeline("text-generation", modelURL);
+const downloadModel = async (modelName) => {
+  generator = await pipeline("text-generation", modelName);
   self.postMessage({
     status: "ready",
-    task: "text-generation",
-    modelURL: modelURL,
   });
 };
 

@@ -6,7 +6,7 @@ type ChatMessage = {
 };
 const aiWorker = new Worker('worker.js', { type: 'module' });
 
-const modelName = 'Xenova/Qwen1.5-0.5B-Chat';
+const MODEL_NAME = 'Xenova/Qwen1.5-0.5B-Chat';
 // Alternativ 1: Xenova/Qwen1.5-0.5B-Chat
 // Alternativ 2: Felladrin/onnx-TinyMistral-248M-Chat-v2
 // Alternativ 3: Felladrin/onnx-Pythia-31M-Chat-v1
@@ -30,7 +30,7 @@ export default function App() {
     setModelStatus('loading');
     aiWorker.postMessage({
       action: 'download',
-      modelURL: modelName,
+      modelName: MODEL_NAME,
     });
   }, [setModelStatus]);
 
@@ -70,7 +70,7 @@ export default function App() {
     <div className="flex w-screen h-screen justify-center items-center bg-[#333]">
       <div className="flex w-[1000px] max-w-full h-[80%] flex-col bg-white p-4 border-3 border-gray-600 overflow-y-scroll">
         <div className="flex flex-row justify-center">
-          <h2 className="text-2xl">AWS AI Workshop: {modelName}</h2>
+          <h2 className="text-2xl">AWS AI Workshop: {MODEL_NAME}</h2>
         </div>
         {modelStatus === 'initial' && (
           <div className="flex flex-col justify-center items-center grow">
@@ -88,7 +88,7 @@ export default function App() {
           <>
             {messages.length === 0 && (
               <div className="flex flex-col justify-center items-center text-[#666] font-mono text-center grow">
-                Start chatting with {modelName}!
+                Start chatting with {MODEL_NAME}!
               </div>
             )}
             {messages.length > 0 && (
