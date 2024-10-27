@@ -121,4 +121,40 @@ Formatet inkluderer metadata og er utvidbart for spesifikke anvendelser. Dette g
 5. Du har nå en fungerende chatbot! Prøv deg frem med ulike prompts og tester slik du gjorde gjennom grensesnittet til Amazon Bedrock. Er din lokale modell like god som AWS sone modeller?
 6. Bonusoppgave: Det er lagt opp til at AI-modellen kun mottar en enkelt melding og svarer på den. Kan du endre APIet så du sender med hele chat-historikken, så den får med seg mer kontekst?
 
-## Del 3: O-la-la-la Llama!
+## Del 3: O-la-la-la LLaMa!
+
+I denne delen skal du laste ned og kjøre litt større modeller lokalt. Det finnes mange ulike verktøy til dette, hvor noen er avhengige av operativsystem og maskinarkitektur. Vi skal benytte verktøyet [Ollama](https://ollama.com/), som i (teorien) skal fungere på både Windows, Mac og Linux. 
+
+1. Følg [instruksjonene](https://ollama.com/) for å laste ned og installere Ollama.
+2. Last ned og test ut [LLaMa 3.2](https://ollama.com/library/llama3.2:3b), Metas nyeste modeller som er optimalisert til å kjøre på maskiner med begrensede ressurser (Ja, din 64GB M3 Mac er en begrenset ressurs).
+3. Prøv et par andre modeller fra [listen over støttede modeller](https://ollama.com/library).
+4. Bonusoppgave: Prøv deg ut med en annen engine, [llama.cpp](https://github.com/ggerganov/llama.cpp). Denne motoren kan brukes til mer enn Ollama, som f.eks. modeller som ikke er trent opp til selvsensurering. Til gjengjeld er det mye mer mas å faktisk få den til å kjøre med en modell som fungerer greit. 
+
+## Del 4: Host din egen LLM gjennom et API
+
+På tide å erstatte den lokale LLMen i nettleseren din med en litt kraftigere og mer effektiv backend som hoster modellen din. I denne delen skal vi dykke ned i `backend`-koden i dette repoet.
+
+For å spinne det opp, gjør følgende:
+```
+cd backend/
+python3 -m venv .venv
+source .venv/bin/activate  # NOTE for Windows: source .venv/Scripts/activate
+pip install -r requirements.txt
+python main.py
+fastapi dev main.py
+```
+
+1. Gjør deg kjent med koden. Dette er en helt standard [FastAPI](https://fastapi.tiangolo.com/)-app som bruker [Pydantic](https://docs.pydantic.dev/latest/) til å definere datatyper.
+2. Vi skal nå bruke Python-biblioteket [ollama](https://github.com/ollama/ollama-python). Bruk [Generate](https://github.com/ollama/ollama-python?tab=readme-ov-file#generate)- eller [Chat](https://github.com/ollama/ollama-python?tab=readme-ov-file#chat)-APIene. Hele [APIet til Ollama er definert her](https://github.com/ollama/ollama/blob/main/docs/api.md), bruk det gjerne som referanse. Et godt tips er å holde deg unna streaming responses, denne workshopppen er ikke lagt opp til å ta det i bruk.
+3. Endre koden i `frontend` til å sende meldinger til `backend` istedet for `worker.js`. Får du bedre eller dårligere svar fra modellen du bruker i backend? Hvorfor?
+4. Bonusoppgave: Kan du endre APIet så du sender med hele chat-historikken, så modellen i backend får med seg mer av konteksten i samtalen, og gir bedre svar?
+
+## Bonus: Del 4.1: Retrieval Augmented Generation
+
+Bruk `testcontainers` til å spinne opp en `pgvector`-container og bruk denne til å søke i en innholdsdatabase over data for å svare på spørsmål.
+
+## Del 5: Amazon Bedrock API
+
+Maskinvaren på din laptop er god, men ikke god nok til å kjøre virkelig store modeller som LLaMa 3.2 90B-Vision. Dette trenger vi en serverpark med GPUer for å kjøre for oss. På tide å bruke #skyen til det den er verdt.
+
+1. 
