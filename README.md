@@ -140,7 +140,6 @@ cd backend/
 python3 -m venv .venv
 source .venv/bin/activate  # NOTE for Windows: source .venv/Scripts/activate
 pip install -r requirements.txt
-python main.py
 fastapi dev main.py
 ```
 
