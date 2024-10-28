@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import * as apiService from './api-service';
+// import * as apiService from './api-service';
 
 type ChatMessage = {
   message: string;
@@ -7,10 +7,7 @@ type ChatMessage = {
 };
 const aiWorker = new Worker('worker.js', { type: 'module' });
 
-const MODEL_NAME = 'Xenova/Qwen1.5-0.5B-Chat';
-// Alternativ 1: Xenova/Qwen1.5-0.5B-Chat
-// Alternativ 2: Felladrin/onnx-TinyMistral-248M-Chat-v2
-// Alternativ 3: Felladrin/onnx-Pythia-31M-Chat-v1
+const MODEL_NAME = '<UNKNOWN>';
 
 export default function App() {
   const chatMessages = useRef<HTMLDivElement>(null);
@@ -38,14 +35,11 @@ export default function App() {
   const sendMessage = useCallback(async () => {
     setChatStatus('loading');
     appendMessage(message, 'user');
-    // aiWorker.postMessage({
-    //   action: 'chat',
-    //   content: message,
-    // });
+    aiWorker.postMessage({
+      action: 'chat',
+      content: message,
+    });
     setMessage('');
-    const answer = await apiService.promptModel(message);
-    appendMessage(answer, 'assistant');
-    setChatStatus('ready');
   }, [message, appendMessage, setMessage]);
 
   useEffect(() => {
