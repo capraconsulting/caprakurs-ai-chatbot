@@ -71,7 +71,7 @@ Det finnes også andre kategorier av modeller:
 **Video**
 
 - [Sora](https://openai.com/index/sora/) fra OpenAI (Ikke tilgjengelig)
-- [Synthesia Avatars](https://www.synthesia.io/video-templates) Eksempel: [video generert gjennom Synthia Studio](./assets/videos/Synthesia%20-%20Cybersecurity%20101%20for%20Employees.mp4)
+- [Synthesia Avatars](https://www.synthesia.io/video-templates) Eksempel: [video generert gjennom Synthia Studio](https://share.synthesia.io/627708f6-e273-4bb3-a89a-0eb7e3a8176a)
 
 </details>
 
