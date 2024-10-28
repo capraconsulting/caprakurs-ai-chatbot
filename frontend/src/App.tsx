@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import * as apiService from './api-service';
 
 type ChatMessage = {
   message: string;
@@ -34,14 +35,17 @@ export default function App() {
     });
   }, [setModelStatus]);
 
-  const sendMessage = useCallback(() => {
+  const sendMessage = useCallback(async () => {
     setChatStatus('loading');
     appendMessage(message, 'user');
-    aiWorker.postMessage({
-      action: 'chat',
-      content: message,
-    });
+    // aiWorker.postMessage({
+    //   action: 'chat',
+    //   content: message,
+    // });
     setMessage('');
+    const answer = await apiService.promptModel(message);
+    appendMessage(answer, 'assistant');
+    setChatStatus('ready');
   }, [message, appendMessage, setMessage]);
 
   useEffect(() => {

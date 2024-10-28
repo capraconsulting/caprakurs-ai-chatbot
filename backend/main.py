@@ -1,33 +1,41 @@
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import ollama
-import boto3
+from ollama import Message
+# import boto3
+# client = boto3.client('bedrock')
 
-client = boto3.client('bedrock')
-
-class GenerateResponse(BaseModel):
-    model: str
+class PromptRequest(BaseModel):
     prompt: str
 
-class GenerateChat(BaseModel):
-    model: str
-    messages: list
+class PromptResponse(BaseModel):
+    answer: str
 
 app = FastAPI()
 
-@app.post("/generate")
-def generate(generateResponse: GenerateResponse):
-    response = ollama.generate(model=generateResponse.model, prompt=generateResponse.prompt)
-    return {"response": response['response']}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/chat")
-def chat(generateChat: GenerateChat):
-    response = ollama.chat(model=generateChat.model, messages=generateChat.messages)
-    return {"response": response['message']['content']}
+def chat(promptRequest: PromptRequest) -> PromptResponse:
+    message: Message = {
+        "role": "user",
+        "content": promptRequest.prompt,
+    }
+
+    response = ollama.chat(model='llama3.2', messages=[message])
+    return PromptResponse(answer=response['message']['content'])
 
 @app.post("/bedrock")
-def chat(generateResponse: GenerateResponse):
-    response = client.get_imported_model(modelIdentifier=generateResponse.model)
-    return {"response": response}
+def chat(promptRequest: PromptRequest) -> PromptResponse:
+    response = client.get_imported_model(modelIdentifier=promptRequest.model)
+    return PromptResponse(answer=response)
+
 

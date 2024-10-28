@@ -145,8 +145,9 @@ fastapi dev main.py
 
 1. Gjør deg kjent med koden. Dette er en helt standard [FastAPI](https://fastapi.tiangolo.com/)-app som bruker [Pydantic](https://docs.pydantic.dev/latest/) til å definere datatyper.
 2. Vi skal nå bruke Python-biblioteket [ollama](https://github.com/ollama/ollama-python). Bruk [Generate](https://github.com/ollama/ollama-python?tab=readme-ov-file#generate)- eller [Chat](https://github.com/ollama/ollama-python?tab=readme-ov-file#chat)-APIene. Hele [APIet til Ollama er definert her](https://github.com/ollama/ollama/blob/main/docs/api.md), bruk det gjerne som referanse. Et godt tips er å holde deg unna streaming responses, denne workshopppen er ikke lagt opp til å ta det i bruk.
+3. Endre koden i endepunktet `/chat` til å ta i mot meldingen fra brukeren, generere et svar gjennom `ollama` og send en respons i retur.
 3. Endre koden i `frontend` til å sende meldinger til `backend` istedet for `worker.js`. Får du bedre eller dårligere svar fra modellen du bruker i backend? Hvorfor?
-4. Bonusoppgave: Kan du endre APIet så du sender med hele chat-historikken, så modellen i backend får med seg mer av konteksten i samtalen, og gir bedre svar?
+4. Bonusoppgave: Kan du endre APIet så du sender med hele chat-historikken, så modellen i backend får med seg mer av konteksten i samtalen, og gir et bedre svar?
 
 ## Bonus: Del 4.1: Retrieval Augmented Generation
 
