@@ -99,7 +99,7 @@ For å spinne det opp, gjør følgende:
 ```
 cd frontend/
 npm i
-npm dev
+npm start
 ```
 
 1. Gjør deg kjent med koden. Dette er en helt standard React-app med TailwindCSS og en [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) som skal gjøre jobben for oss. Om du ikke har jobbet med en Web Worker før kan du bruke [Web Worker tutorial](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) som referanse på hvordan en sender meldinger frem og tilbake mellom workeren og hovedkoden din. Det viktigste filene er `src/App.tsx` og `public/worker.js`.
