@@ -35,7 +35,21 @@ def chat(promptRequest: PromptRequest) -> PromptResponse:
 
 @app.post("/bedrock")
 def chat(promptRequest: PromptRequest) -> PromptResponse:
-    response = client.get_imported_model(modelIdentifier=promptRequest.model)
-    return PromptResponse(answer=response)
+    model_id = "anthropic.claude-3-5-sonnet-20240620-v1:0"
+    conversation = [
+        {
+            "role": "user",
+            "content": [{"text": promptRequest.prompt}],
+        }
+    ]
+    response = client.converse(
+        modelId=model_id,
+        messages=conversation,
+        inferenceConfig={"maxTokens": 512, "temperature": 0.5, "topP": 0.9},
+    )
+    response_text = response["output"]["message"]["content"][0]["text"]
+    print(response_text)
+
+    return PromptResponse(answer=response_text)
 
 

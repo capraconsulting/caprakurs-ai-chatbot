@@ -77,7 +77,7 @@ Det finnes også andre kategorier av modeller:
 
 7. Klikk "Next" nederst på siden og "Submit". Du burde ha tilgang til modellene innen 2 - 5 minutter.
 8. Test ut Chat/Text med noen av modellene. Se om du finner forskjeller mellom modellene og gjør deg opp en mening om hvilke som fungerer best
- 
+
 <details>
 <summary>Hva skal du spørre om?</summary>
 
@@ -96,6 +96,7 @@ Hva betur parametrene `p`, `k` og `temperature`? For en god forklaring, sjekk ut
 Vi skal nå dykke ned i `frontend`-koden i dette repoet.
 
 For å spinne det opp, gjør følgende:
+
 ```
 cd frontend/
 npm i
@@ -123,18 +124,19 @@ Formatet inkluderer metadata og er utvidbart for spesifikke anvendelser. Dette g
 
 ## Del 3: O-la-la-la LLaMa!
 
-I denne delen skal du laste ned og kjøre litt større modeller lokalt. Det finnes mange ulike verktøy til dette, hvor noen er avhengige av operativsystem og maskinarkitektur. Vi skal benytte verktøyet [Ollama](https://ollama.com/), som i (teorien) skal fungere på både Windows, Mac og Linux. 
+I denne delen skal du laste ned og kjøre litt større modeller lokalt. Det finnes mange ulike verktøy til dette, hvor noen er avhengige av operativsystem og maskinarkitektur. Vi skal benytte verktøyet [Ollama](https://ollama.com/), som i (teorien) skal fungere på både Windows, Mac og Linux.
 
 1. Følg [instruksjonene](https://ollama.com/) for å laste ned og installere Ollama.
 2. Last ned og test ut [LLaMa 3.2](https://ollama.com/library/llama3.2:3b), Metas nyeste modeller som er optimalisert til å kjøre på maskiner med begrensede ressurser (Ja, din 64GB M3 Mac er en begrenset ressurs).
 3. Prøv et par andre modeller fra [listen over støttede modeller](https://ollama.com/library).
-4. Bonusoppgave: Prøv deg ut med en annen engine, [llama.cpp](https://github.com/ggerganov/llama.cpp). Denne motoren kan brukes til mer enn Ollama, som f.eks. modeller som ikke er trent opp til selvsensurering. Til gjengjeld er det mye mer mas å faktisk få den til å kjøre med en modell som fungerer greit. 
+4. Bonusoppgave: Prøv deg ut med en annen engine, [llama.cpp](https://github.com/ggerganov/llama.cpp). Denne motoren kan brukes til mer enn Ollama, som f.eks. modeller som ikke er trent opp til selvsensurering. Til gjengjeld er det mye mer mas å faktisk få den til å kjøre med en modell som fungerer greit.
 
 ## Del 4: Host din egen LLM gjennom et API
 
 På tide å erstatte den lokale LLMen i nettleseren din med en litt kraftigere og mer effektiv backend som hoster modellen din. I denne delen skal vi dykke ned i `backend`-koden i dette repoet.
 
 For å spinne det opp, gjør følgende:
+
 ```
 cd backend/
 python3 -m venv .venv
@@ -146,8 +148,8 @@ fastapi dev main.py
 1. Gjør deg kjent med koden. Dette er en helt standard [FastAPI](https://fastapi.tiangolo.com/)-app som bruker [Pydantic](https://docs.pydantic.dev/latest/) til å definere datatyper.
 2. Vi skal nå bruke Python-biblioteket [ollama](https://github.com/ollama/ollama-python). Bruk [Generate](https://github.com/ollama/ollama-python?tab=readme-ov-file#generate)- eller [Chat](https://github.com/ollama/ollama-python?tab=readme-ov-file#chat)-APIene. Hele [APIet til Ollama er definert her](https://github.com/ollama/ollama/blob/main/docs/api.md), bruk det gjerne som referanse. Et godt tips er å holde deg unna streaming responses, denne workshopppen er ikke lagt opp til å ta det i bruk.
 3. Endre koden i endepunktet `/chat` til å ta i mot meldingen fra brukeren, generere et svar gjennom `ollama` og send en respons i retur.
-3. Endre koden i `frontend` til å sende meldinger til `backend` istedet for `worker.js`. Får du bedre eller dårligere svar fra modellen du bruker i backend? Hvorfor?
-4. Bonusoppgave: Kan du endre APIet så du sender med hele chat-historikken, så modellen i backend får med seg mer av konteksten i samtalen, og gir et bedre svar?
+4. Endre koden i `frontend` til å sende meldinger til `backend` sitt `/chat` endepunkt i stedet for `worker.js`. Får du bedre eller dårligere svar fra modellen du bruker i backend? Hvorfor?
+5. Bonusoppgave: Kan du endre APIet så du sender med hele chat-historikken, så modellen i backend får med seg mer av konteksten i samtalen, og gir et bedre svar?
 
 ## Bonus: Del 4.1: Retrieval Augmented Generation
 
@@ -157,8 +159,29 @@ Dette er en oppgave hvor følgende bilde blir relevant:
 
 Bruk `testcontainers` til å spinne opp en `pgvector`-container og bruk denne til å søke i en innholdsdatabase over data for å svare på spørsmål.
 
+1. Spinn opp en `pgvector`-container med Docker eller `testcontainers`.
+2. Les [denne guiden](https://www.kaggle.com/code/arashnic/rag-with-sentence-and-hugging-face-transformers) om hvordan du kan lage `embeddings` av tekst, hva det er og hvordan det fungerer.
+3. Opprett en tabell i `pgvector`-databasen din og sett inn litt tekst og dets tilhørende embeddings
+4. Skriv SQL for å finne de semantisk likeste tekstene og sett dem inn i promptet du sender videre til `ollama`.
+5. Om du rekker dette er du rask nok og har mest sannsynlig god nok kontroll til å hjelpe de andre på kurset. Reis deg opp og bidra som medhjelper til instruktørene.
+
 ## Del 5: Amazon Bedrock API
 
-Maskinvaren på din laptop er god, men ikke god nok til å kjøre virkelig store modeller som LLaMa 3.2 90B-Vision. Dette trenger vi en serverpark med GPUer for å kjøre for oss. På tide å bruke #skyen til det den er verdt.
+Maskinvaren på din laptop er god, men ikke god nok til å kjøre virkelig store modeller som LLaMa 3.2 90B-Vision. Dette trenger vi en serverpark med GPUer til å kjøre for oss. På tide å bruke #skyen til det den er verdt.
 
-1. 
+1. Tilbake i `backend`-repoet er det allerede lagt inn biblioteket `boto3`. På tross av hva navnet skulle tilsi er dette AWS sin offisielle SDK i Python-økosystemet. For å koble til AWS må du opprette en [Session](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/core/session.html#boto3.session.Session). For å starte en Session trenger du `aws_access_key_id`, `aws_secret_access_key` og `region_name`. For å opprette en access key kan du følge [denne guiden](https://docs.aws.amazon.com/IAM/latest/UserGuide/access-key-self-managed.html#Using_CreateAccessKey). `region_name` setter du til den regionen du bruker i konsollen. Default her er `us-east-1`.
+
+<details>
+<summary>Hvorfor boto3?</summary>
+
+Boto (Uttalt boh-toh) er en type ferskvanns-delfin som bor i Amazonas-elven.
+
+</details>
+
+2. For å kommunisere med modellene du aktiverte i Del 1 av denne workshoppen kan du følge [denne guiden](https://docs.aws.amazon.com/code-library/latest/ug/python_3_bedrock-runtime_code_examples.html). Modellnavn og parametere avhenger av modellvalget du gjorde tidligere.
+3. Endre `frontend`-koden til å bruke endepunktet `/bedrock` i stedet for `/chat`. Endepunktene bruker i utgangspunktet samme datamodell, så endringene burde være minimale. Får du raskere svar fra Bedrock enn `ollama`?
+4. Bonusoppgave: Om du ikke allerede har gjort det, endre APIet så du sender med hele chat-historikken.
+
+## Bonus: Del 5.1: Bildegenerering gjennom Amazon Bedrock
+
+Amazon Bedrock har også mulighet til å generere bilder gjennom APIet sitt. Bruk `boto3` til å generere bilder og send dem tilbake til klienten. Du kan f.eks. implementere at meldinger som begynner med `image:` skal sendes til SDXL i Bedrock istedet for en tekst-modell.
