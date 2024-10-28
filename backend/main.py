@@ -4,8 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import ollama
 from ollama import Message
-# import boto3
-# client = boto3.client('bedrock')
+import boto3
+session = boto3.Session(
+    aws_access_key_id="XXX",
+    aws_secret_access_key="XXXXXXXXXXXXXXX",
+    region_name="us-east-1"
+)
+client = session.client('bedrock-runtime')
 
 class PromptRequest(BaseModel):
     prompt: str
