@@ -70,7 +70,7 @@ export default function App() {
     <div className="flex w-screen h-screen justify-center items-center bg-[#333]">
       <div className="flex w-[1000px] max-w-full h-[80%] flex-col bg-white p-4 border-3 border-gray-600 overflow-y-scroll">
         <div className="flex flex-row justify-center">
-          <h2 className="text-2xl">AWS AI Workshop: {MODEL_NAME}</h2>
+          <h2 className="text-2xl">AWS AI Workshop: {MODEL_NAME} model</h2>
         </div>
         {modelStatus === 'initial' && (
           <div className="flex flex-col justify-center items-center grow">

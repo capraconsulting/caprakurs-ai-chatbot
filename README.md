@@ -150,6 +150,10 @@ fastapi dev main.py
 
 ## Bonus: Del 4.1: Retrieval Augmented Generation
 
+Dette er en oppgave hvor følgende bilde blir relevant:
+
+![Hvordan tegne en ugle](./assets/images/how-to-draw-an-owl.webp "Hvordan tegne en ugle")
+
 Bruk `testcontainers` til å spinne opp en `pgvector`-container og bruk denne til å søke i en innholdsdatabase over data for å svare på spørsmål.
 
 ## Del 5: Amazon Bedrock API
