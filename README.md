@@ -151,7 +151,8 @@ fastapi dev main.py
 
 Dette er en oppgave hvor følgende bilde blir relevant:
 
-![Hvordan tegne en ugle](./assets/images/how-to-draw-an-owl.png "Hvordan tegne en ugle")
+![How to draw an owl](./assets/images/how-to-draw-an-owl.png "How to draw an owl.")
+How to draw an owl. Image credits: https://timoelliott.com/blog/2023/05/why-ai-is-like-drawing-an-owl.html
 
 TL;DR: Bruk `testcontainers` til å spinne opp en `pgvector`-container og bruk denne til å søke i en innholdsdatabase over data for å svare på spørsmål.
 
